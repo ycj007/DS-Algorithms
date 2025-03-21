@@ -1,9 +1,5 @@
 package com.ycj.a_sort.ds;
 
-import java.util.PriorityQueue;
-
-import static org.apache.commons.lang3.ArrayUtils.swap;
-
 public class CustomPriorityQueue {
 
     private int[] data;
@@ -29,6 +25,13 @@ public class CustomPriorityQueue {
         data[size] = value;
         swim(data, size);
         ++size;
+    }
+
+    public int peek() {
+        if (size == 0) {
+            throw new RuntimeException("队列已空");
+        }
+        return data[0];
     }
 
     public int delete() {
