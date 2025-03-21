@@ -1,5 +1,6 @@
 package com.ycj.a_sort.ds;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class CustomPriorityQueue<T extends Comparable<T>> {
@@ -7,12 +8,14 @@ public class CustomPriorityQueue<T extends Comparable<T>> {
     private Object[] data;
     private int size = 0;
     private boolean isMax = false;
+    private static final int MAX_CAPACITY = Integer.MAX_VALUE; // 定义最大容量
+    private static final int MIN_CAPACITY = 8; // 定义最大容量
 
-    public CustomPriorityQueue(int maxSize) {
-        if (maxSize <= 0) {
+    public CustomPriorityQueue(int initCapacity) {
+        if (initCapacity <= 0) {
             throw new RuntimeException("maxSize must be greater than 0");
         }
-        this.data = new Object[maxSize];
+        this.data = new Object[initCapacity];
     }
 
     public CustomPriorityQueue(int maxSize, boolean isMax) {
@@ -20,8 +23,6 @@ public class CustomPriorityQueue<T extends Comparable<T>> {
         this.isMax = isMax;
     }
 
-
-    private static final int MAX_CAPACITY = Integer.MAX_VALUE; // 定义最大容量
 
     /**
      * 插入元素
@@ -45,6 +46,84 @@ public class CustomPriorityQueue<T extends Comparable<T>> {
         data[size] = value;
         swim(data, size); // 调整堆结构
         ++size;
+        resize();
+    }
+
+    private void resize() {
+        // 检查是否需要扩容
+        if (size >= data.length) {
+            // 确保 size 和 MAX_CAPACITY 的合法性
+            if (data.length <= 0 || MAX_CAPACITY <= 0) {
+                throw new IllegalStateException("Invalid array length or MAX_CAPACITY");
+            }
+
+            // 计算新的容量
+            int expandedCapacity = data.length * 2;
+            if (expandedCapacity > MAX_CAPACITY) {
+                expandedCapacity = MAX_CAPACITY;
+            }
+
+            // 避免扩容后容量小于当前 size 的情况
+            if (expandedCapacity < size) {
+                throw new IllegalStateException("Expanded capacity is less than current size");
+            }
+
+            // 扩容操作
+            try {
+                data = Arrays.copyOf(data, expandedCapacity);
+            } catch (OutOfMemoryError e) {
+                throw new RuntimeException("Failed to resize array due to memory constraints", e);
+            }
+        }
+    }
+
+    /**
+     * 当删除元素后，队列容量过大，则缩小容量，当前容量只有50% 使用时进行
+     */
+    private void reduceSize() {
+        // 检查 data 是否为 null，避免 NullPointerException
+        if (data == null) {
+            return; // 如果 data 为 null，直接返回，无需缩小容量
+        }
+        if (size > data.length / 2) {
+            return;
+        }
+
+        // 计算新的容量
+        int newCapacity = calculateNewCapacity(data.length);
+
+        // 如果新容量等于原容量，无需缩小
+        if (newCapacity == data.length) {
+            return;
+        }
+
+        // 缩小容量
+        resizeArray(newCapacity);
+    }
+
+    /**
+     * 计算新的容量，确保其大于等于最小容量（MIN_CAPACITY）
+     */
+    private int calculateNewCapacity(int currentCapacity) {
+        int newCapacity = currentCapacity / 2;
+
+        // 确保新容量不低于最小容量
+        if (newCapacity < MIN_CAPACITY) {
+            return MIN_CAPACITY;
+        }
+
+        return newCapacity;
+    }
+
+    /**
+     * 调整数组大小
+     */
+    private void resizeArray(int newCapacity) {
+        // 使用 Arrays.copyOf 进行调整
+        data = Arrays.copyOf(data, newCapacity);
+
+        // （可选）日志记录，便于调试和监控
+        // System.out.println("Array capacity reduced to: " + newCapacity);
     }
 
 
