@@ -18,8 +18,8 @@ public class CustomPriorityQueue<T extends Comparable<T>> {
         this.data = new Object[initCapacity];
     }
 
-    public CustomPriorityQueue(int maxSize, boolean isMax) {
-        this(maxSize);
+    public CustomPriorityQueue(int initCapacity, boolean isMax) {
+        this(initCapacity);
         this.isMax = isMax;
     }
 
