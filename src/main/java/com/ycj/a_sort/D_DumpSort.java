@@ -6,7 +6,7 @@ import com.ycj.a_sort.ab.BaseSort;
  * 归并排序类，实现BaseSort接口
  * 归并排序是一种分治算法，它将数组分成两半，分别排序，然后合并
  */
-public class C_DumpSort implements BaseSort {
+public class D_DumpSort implements BaseSort {
 
     /**
      * 对外提供的排序接口方法

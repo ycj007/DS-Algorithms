@@ -6,13 +6,13 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 
-public class C_DumpSortTest {
+public class D_DumpSortTest {
 
-    private C_DumpSort sort;
+    private D_DumpSort sort;
 
     @Before
     public void setUp() {
-        sort = new C_DumpSort();
+        sort = new D_DumpSort();
     }
 
     @Test
