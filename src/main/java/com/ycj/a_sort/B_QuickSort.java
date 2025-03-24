@@ -58,6 +58,24 @@ public class B_QuickSort implements BaseSort {
         return left;
     }
 
+    //2.双向扫描分区法（两指正等地位，向中间扫描）
+    public int partition3(int[] arr, int begin, int end) {
+        int pivot = arr[begin];//确定主元为数组的第一个元素
+        int left = begin + 1;//左侧指针
+        int right = end;//右侧指针
+        while (left <= right) {
+            //注意加left<=right条件，防止左右指针咋在外部while的内部相交
+            while (left <= right && arr[left] <= pivot) left++;
+            while (left <= right && arr[right] > pivot) right--;
+            //注意：交换左右指针所指元素时也要判定left<=right
+            //因为在上面两个while中可能导致left和right错位
+            if (left <= right) swap(arr, left, right);
+        }
+        //退出while表示已经相交，找到了pivot的最终位置:right位置(由arr[left]<=pivot决定)
+        swap(arr, begin, right);
+        return right;//返回位置
+    }
+
     private int partition2(int[] arr, int left, int right) {
         int pivot = arr[left];
         int index = left;
