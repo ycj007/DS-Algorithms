@@ -8,56 +8,59 @@ import static org.junit.Assert.assertArrayEquals;
 
 public class PlayTest {
 
-    private int[] emptyArray;
-    private int[] singleElementArray;
-    private int[] sortedArray;
-    private int[] unsortedArray;
-    private int[] arrayWithDuplicates;
-    private int[] arrayWithNegativesAndZero;
+    private int[] arr;
 
     @Before
     public void setUp() {
-        emptyArray = new int[]{};
-        singleElementArray = new int[]{1};
-        sortedArray = new int[]{1, 2, 3, 4, 5};
-        unsortedArray = new int[]{5, 3, 1, 4, 2};
-        arrayWithDuplicates = new int[]{3, 1, 2, 3, 1};
-        arrayWithNegativesAndZero = new int[]{0, -1, 2, -3, 1};
+        arr = new int[]{170, 45, 75, 90, 802, 24, 2, 66};
     }
 
     @Test
-    public void quickSort_EmptyArray_ShouldRemainUnchanged() {
-        Play.quickSort(emptyArray);
-        assertArrayEquals("Empty array should remain unchanged", new int[]{}, emptyArray);
+    public void radixSort_NullArray_NoChange() {
+        int[] nullArray = null;
+        Play.radixSort(nullArray);
+        assertArrayEquals(null, nullArray);
     }
 
     @Test
-    public void quickSort_SingleElementArray_ShouldRemainUnchanged() {
-        Play.quickSort(singleElementArray);
-        assertArrayEquals("Single element array should remain unchanged", new int[]{1}, singleElementArray);
+    public void radixSort_EmptyArray_NoChange() {
+        int[] emptyArray = {};
+        Play.radixSort(emptyArray);
+        assertArrayEquals(new int[]{}, emptyArray);
     }
 
     @Test
-    public void quickSort_SortedArray_ShouldRemainUnchanged() {
-        Play.quickSort(sortedArray);
-        assertArrayEquals("Sorted array should remain unchanged", new int[]{1, 2, 3, 4, 5}, sortedArray);
+    public void radixSort_SingleElementArray_NoChange() {
+        int[] singleElementArray = {42};
+        Play.radixSort(singleElementArray);
+        assertArrayEquals(new int[]{42}, singleElementArray);
     }
 
     @Test
-    public void quickSort_UnsortedArray_ShouldBeSorted() {
-        Play.quickSort(unsortedArray);
-        assertArrayEquals("Unsorted array should be sorted", new int[]{1, 2, 3, 4, 5}, unsortedArray);
+    public void radixSort_AllSameElements_Sorted() {
+        int[] sameElementsArray = {5, 5, 5, 5};
+        Play.radixSort(sameElementsArray);
+        assertArrayEquals(new int[]{5, 5, 5, 5}, sameElementsArray);
     }
 
     @Test
-    public void quickSort_ArrayWithDuplicates_ShouldBeSorted() {
-        Play.quickSort(arrayWithDuplicates);
-        assertArrayEquals("Array with duplicates should be sorted", new int[]{1, 1, 2, 3, 3}, arrayWithDuplicates);
+    public void radixSort_RandomNumbers_Sorted() {
+        int[] randomNumbers = {170, 45, 75, 90, 802, 24, 2, 66};
+        Play.radixSort(randomNumbers);
+        assertArrayEquals(new int[]{2, 24, 45, 66, 75, 90, 170, 802}, randomNumbers);
     }
 
     @Test
-    public void quickSort_ArrayWithNegativesAndZero_ShouldBeSorted() {
-        Play.quickSort(arrayWithNegativesAndZero);
-        assertArrayEquals("Array with negatives and zero should be sorted", new int[]{-3, -1, 0, 1, 2}, arrayWithNegativesAndZero);
+    public void radixSort_MaxDigits_Sorted() {
+        int[] maxDigitsArray = {99999, 10000, 1000, 100, 10, 1};
+        Play.radixSort(maxDigitsArray);
+        assertArrayEquals(new int[]{1, 10, 100, 1000, 10000, 99999}, maxDigitsArray);
+    }
+
+    @Test
+    public void radixSort_NegativeNumbers_NoChange() {
+        int[] negativeNumbers = {-1, -2, -3, -4};
+        Play.radixSort(negativeNumbers);
+        assertArrayEquals(new int[]{-4, -3, -2, -1}, negativeNumbers);
     }
 }
